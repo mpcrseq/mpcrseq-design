@@ -21,6 +21,11 @@ Brief description here.
 **Inputs** Fasta genome file, bed file with locations to mask  
 **Outputs** Masked fasta (Ns in place of all variable loci)
 
+
+### Mappability masking
+ (optional) https://github.com/cpockrandt/genmap
+
+
 ### Variant Filtering
 Check for homo-polymer regions
 
@@ -33,6 +38,7 @@ Uses primer3 to find primers for each target locus.
 **Outputs** primer_pairs_tsv  
 primer_pairs_tsv: primer_pair_name(f_start,f_end,r_start,r_end) target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm
 
+
 ### Primer characteristics checking
 A. Flag primers with GC at 3' end of primer (which stabilizes the binding site and may improve efficiency)
 B. Flag primers with too many GC at end of primer (too many can cause mispriming)
@@ -42,11 +48,13 @@ D. Flag primers with di repeats
 **Inputs** primer_pairs_tsv  
 **Outputs** primer_pairs_tsv with A-D flags
 
+
 ### Primer off-target exact matching
 Flag any primer pairs that match off-target sequences. Exact matching is much faster than inexact matching, so we first remove exact matches.
 
 **Inputs** primer_pairs_tsv  
 **Outputs** primer_pairs_tsv flagged with exact matches
+
 
 ### Primer off-target inexact matching
 Flag primer pairs that match thermodynamically to off-target sequences.
@@ -54,12 +62,14 @@ Flag primer pairs that match thermodynamically to off-target sequences.
 **Inputs** primer_pairs_tsv  
 **Outputs** primer_pairs_tsv annotated with off-target Tm
 
+
 ### Primer pair dimerization
 Check for pairwise primer dimers, including adapter sequences (primer dimers across pairs of primers). Primer3 (step 2) checks for within pair dimerization.
 
 **Inputs** primer_pairs_tsv  
 **Outputs** primer_pairs_tsv, primer_dimer_matrix
 primer_dimer_matrix: a matrix with primer_dimer tms. [Not sure this is the best way to store this info]
+
 
 ### Non-target genome matching
 Repeat off-target matching steps for non-target genomes.
