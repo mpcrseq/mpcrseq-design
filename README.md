@@ -35,18 +35,23 @@ The input reference genome must be repeat masked. This pipeline does not perform
 **Outputs** Masked fasta (Ns in place of all regions with low mappability)
 
 
-### Variant Filtering
-Check for homo-polymer regions
+### Target Filtering
+(optional) Check for homo-polymer regions overlapping or very near target polymorphism. Homo-polymers have higher error rates when sequenced on Oxford Nanopore sequencers.
 
+**Inputs** Target bed file
+**Outputs**
+  Filtered target bed file
+  Rejected targets with reason (homopolymer overlap)
 
 ### Primer design
 Uses primer3 to find primers for each target locus.
 
 **Inputs** Masked fasta genome, bed file with targets, config variables  
   config variables: Tm range, primer size range, amplicon size range  
-**Outputs** primer_pairs_tsv  
-primer_pairs_tsv: primer_pair_name(f_start,f_end,r_start,r_end) target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm
-
+**Outputs**
+  primer_pairs_tsv  
+    primer_pairs_tsv: primer_pair_name(f_start,f_end,r_start,r_end) target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm
+  Rejected targets with reason (no primers)
 
 ### Primer characteristics checking
 A. Flag primers with GC at 3' end of primer (which stabilizes the binding site and may improve efficiency)
