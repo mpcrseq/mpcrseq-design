@@ -9,13 +9,14 @@ Brief description here.
 1. Repeat Masking (important step to be completed before running the pipeline.)
 2. Variant Masking
 3. Mappability Masking
-4. Primer design
-5. Primer characteristics checking
-6. Primer off-target exact matching
-7. Primer off-target inexact matching
-8. Primer pair dimerization
-9. Non-target genome matching
-10. Filter primer pairs for compatability
+4. Target Homopolymer Filtering
+5. Primer design
+6. Primer characteristics checking
+7. Primer off-target exact matching
+8. Primer off-target inexact matching
+9. Primer pair dimerization
+10. Non-target genome matching
+11. Filter primer pairs for compatability
 
 ### Repeat Masking
 The input reference genome must be repeat masked. This pipeline does not perform repeat masking. [RepeatMasker](http://www.repeatmasker.org) will do the job.
@@ -35,7 +36,7 @@ The input reference genome must be repeat masked. This pipeline does not perform
 **Outputs** Masked fasta (Ns in place of all regions with low mappability)
 
 
-### Target Filtering
+### Target Homopolymer Filtering
 (optional) Check for homo-polymer regions overlapping or very near target polymorphism. Homo-polymers have higher error rates when sequenced on Oxford Nanopore sequencers.
 
 **Inputs** Target bed file
