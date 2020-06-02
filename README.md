@@ -1,30 +1,38 @@
 ## mpcrseq-design
-A pipeline to design PCR primer pools for hundreds of targets.
+A [nextflow](https://nextflow.io) based pipeline to design PCR primer pools for hundreds of targets.
 
 ## Introduction
 Brief description here.
 
 ## Pipeline steps
 
-1. Variant Masking
-2. Mappability Masking
-3. Primer design
-4. Primer characteristics checking
-5. Primer off-target exact matching
-6. Primer off-target inexact matching
-7. Primer pair dimerization
-8. Non-target genome matching
-9. Filter primer pairs for compatability
+1. Repeat Masking (important step to be completed before running the pipeline.)
+2. Variant Masking
+3. Mappability Masking
+4. Primer design
+5. Primer characteristics checking
+6. Primer off-target exact matching
+7. Primer off-target inexact matching
+8. Primer pair dimerization
+9. Non-target genome matching
+10. Filter primer pairs for compatability
+
+### Repeat Masking
+The input reference genome must be repeat masked. This pipeline does not perform repeat masking. [RepeatMasker](http://www.repeatmasker.org) will do the job.
+
 
 ### Variant Masking
 (optional) Masks known variants so that primers do not overlap variable loci.
 
 **Inputs** Fasta genome file, bed file with locations to mask  
-**Outputs** Masked fasta (Ns in place of all variable loci)
+**Outputs** Masked fasta (Ns in place of all polymorphic loci)
 
 
 ### Mappability masking
  (optional) https://github.com/cpockrandt/genmap
+
+**Inputs** Variant masked genome file.
+**Outputs** Masked fasta (Ns in place of all regions with low mappability)
 
 
 ### Variant Filtering
