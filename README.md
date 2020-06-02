@@ -7,13 +7,14 @@ Brief description here.
 ## Pipeline steps
 
 1. Variant Masking
-2. Primer design
-3. Primer characteristics checking
-4. Primer off-target exact matching
-5. Primer off-target inexact matching
-6. Primer pair dimerization
-7. Non-target genome matching
-8. Filter primer pairs for compatability
+2. Mappability Masking
+3. Primer design
+4. Primer characteristics checking
+5. Primer off-target exact matching
+6. Primer off-target inexact matching
+7. Primer pair dimerization
+8. Non-target genome matching
+9. Filter primer pairs for compatability
 
 ### Variant Masking
 (optional) Masks known variants so that primers do not overlap variable loci.
