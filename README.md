@@ -8,7 +8,7 @@ Brief description here.
 
   1. Install [Nextflow](https://www.nextflow.io).
 
-  2. Use docker (very slow on macs), or install the following software:  
+  2. Use [docker](https://www.docker.com) (very slow on macs), or install the following software:  
     htslib or tabix (for bgzip)  
     python3 and packages: biopython primer3-py pyfaidx  
     bedtools  
