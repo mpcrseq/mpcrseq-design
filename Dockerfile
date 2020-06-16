@@ -8,3 +8,6 @@ COPY bin/mpcrutils /usr/local/
 RUN ln -s /usr/local/mpcrutils.py3 /usr/local/bin/mpcrutils.py3
 RUN chmod +x /usr/local/bin/mpcrutils.py3
 RUN apt-get install -y tabix
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+RUN pip3 install biopython
