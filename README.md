@@ -8,8 +8,18 @@ Brief description here.
 
   1. Install [Nextflow](https://www.nextflow.io).
 
+  2. Use docker (very slow on macs), or install the following software:  
+    htslib or tabix (for bgzip)  
+    python3 and packages: biopython primer3-py pyfaidx  
+    bedtools  
+
   2. Test the pipeline  
+  with docker:
     nextflow run -profile test,docker
+
+  without docker:
+    nextflow run -profile test
+
 
   3. Run with your own data  
     nextflow run -profile docker -reference reference.fasta -targets targets.bed
