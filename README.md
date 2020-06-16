@@ -14,10 +14,10 @@ Brief description here.
     bedtools  
 
   2. Test the pipeline  
-  with docker:
+  with docker:  
     nextflow run -profile test,docker
 
-  without docker:
+  without docker:  
     nextflow run -profile test
 
 
