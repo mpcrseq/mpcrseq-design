@@ -2,40 +2,14 @@
 
 import click
 import csv
+from pyfaidx import Fasta
+
+# Primer3-py bindings
 import primer3
 
-def global_args():
-  
+# Primer3 functions
+import p3
 
-
-
-def run_primer3(fasta, targets_bed):
-  # Set global arguments
-
-    tbed = open(targets_bed, 'r'):
-    fasta = open(fasta, 'r')
-    for line in tbed:
-        # first we get the sequence template for this target from the input fasta
-        # The template is the maximum primer product size range before and after the target
-        # This is a little larger than necessary, but it doesn't matter.
-        seq_start    = target_loc - max(product_size_range)
-        seq_end      = target_loc + max(product_size_range)
-        # Maybe there is a python package to do this.
-        seq_template = `samtools faidx chrom:seq_start-seq_end`
-        # 
-    
-    
-    bindings.designPrimers(
-        {
-            'SEQUENCE_ID': target_id,
-            'SEQUENCE_TEMPLATE': seq_template,
-            'SEQUENCE_INCLUDED_REGION': [0,len(seq_template)],
-            'SEQUENCE_TARGET': seq_target
-        },
-        global_args)
-    
-    
-    
 
 def gcclamp(sequence):  # Returns True if 2 or fewer G or C nucleotides are within the last 5 bases.
     #Oligonucleotides with more than three G or C nucleotides within the last  five bases were  filtered.  This should help minimize mispriming at GC-rich binding sites
@@ -77,16 +51,19 @@ def GC_3prime(sequence):  # Returns True if 3' end of oligo is G or C
     return(set(sequence[-1:]) <= set('GC'))
 
 
-
+# See https://click.palletsprojects.com/en/7.x/
 @click.group()
 def cli():
     pass
 
 @cli.command('primer3')
-@click.argument('ref')
-@click.argument('target_bed')
-def primer3_routine(path):
-    
+@click.argument('targets', type=click.Path(exists=True))
+@click.argument('fasta', type=click.Path(exists=True))
+@click.option('--product_size_range', default = '0-100')
+def primer3_routine(targets, fasta, product_size_range):
+    p3_results = p3.run_primer3(targets, fasta, product_size_range)
+    for t in p3_results:
+        print('\t'.join(str(s) for s in t))
 
 
 @cli.command('gcclamp')
