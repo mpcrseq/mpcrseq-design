@@ -17,13 +17,14 @@ Brief description here.
 
 ```bash
 #with docker
-nextflow run -profile test,docker
+nextflow run mpcrseq/mpcrseq-design -profile test,docker
 #without docker
-nextflow run -profile test
+nextflow run mpcrseq/mpcrseq-design -profile test
 ```
 
   3. Run with your own data  
-    nextflow run -profile docker -reference reference.fasta -targets targets.bed
+  
+    nextflow run mpcrseq/mpcrseq-design -profile docker -reference reference.fasta -targets targets.bed
 
 ## Pipeline steps
 
