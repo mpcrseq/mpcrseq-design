@@ -5,3 +5,5 @@ work
 trace
 .nextflow*
 trace*
+
+__pycache__
