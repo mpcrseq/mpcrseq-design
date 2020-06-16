@@ -5,7 +5,6 @@ work
 trace
 .nextflow*
 trace*
-timeline
 timeline*
 
 __pycache__
