@@ -37,9 +37,13 @@ rm pantig.vcf
 Sample single nucleotide targets to design primers for.
 
 ```bash
-bcftools view --type=snps --min-af=0.3 --max-af=0.7 pantig.vcf.gz > targets.vcf
-bcftools query -f '%CHROM\t%POS\t%POS\n' targets.vcf | awk '{print($1, $2, $2+1, $1":"$2)}' > targets.bed
+bcftools view --type=snps --min-af=0.3 --max-af=0.7 pantig.sorted.vcf.gz > targets.vcf
+bgzip targets.vcf
+tabix targets.vcf.gz
+bcftools query -f '%CHROM\t%POS\t%POS\n' targets.vcf.gz | awk 'BEGIN {OFS="\t"} {print($1, $2, $2+1, $1":"$2)}' > targets.bed
 bgzip -@8 targets.bed
 tabix -fp bed targets.bed.gz
+gzcat targets.bed.gz | head -n 100 > targets-tiny.bed
+bgzip targets-tiny.bed
 ```
 
