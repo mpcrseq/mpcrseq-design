@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nextflow run main.nf -resume -c nextflow.config -with-timeline -with-trace
+nextflow run main.nf -resume -profile test,docker -with-timeline -with-trace 
