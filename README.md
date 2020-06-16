@@ -14,12 +14,13 @@ Brief description here.
     bedtools  
 
   2. Test the pipeline  
-  with docker:  
-    nextflow run -profile test,docker
 
-  without docker:  
-    nextflow run -profile test
-
+```bash
+#with docker
+nextflow run -profile test,docker
+#without docker
+nextflow run -profile test
+```
 
   3. Run with your own data  
     nextflow run -profile docker -reference reference.fasta -targets targets.bed
