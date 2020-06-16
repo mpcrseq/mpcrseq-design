@@ -1,9 +1,7 @@
 
-
-
 Channel.fromPath(params.reference).into{ch_reference_for_maskreference; ch_reference_for_primer3; ch_reference_for_int_therm_matching}
 ch_vcf = Channel.fromPath(params.vcf)
-ch_targetbed = Channel.value(params.targets)
+ch_targetbed = Channel.fromPath(params.targets)
 
 // First step is to use supplied VCF or BED file to mask the reference. Masked sites are lowercase, and primers should not overlap these sites.
 process maskreference {
@@ -40,19 +38,21 @@ process primer3 {
     file bed from ch_targetbed
 
     output:
-    file "*.00_primer3.bed" into ch_primer3
+    file "${params.run_prefix}.00_primer3.tsv" into ch_primer3
 
     script:
     """
     
-    mpcrutils primer3 --ref $fasta --target_bed $bed > ${params.run_prefix}.00_primer3.csv
+    mpcrutils.py3 primer3 --product_size_range '0-200' $bed $fasta > ${params.run_prefix}.00_primer3.tsv
     
     """
 }
 
+/*
 
 // This process filters primers based on some "rules" gathered from literature and the internet. A. Flag primers with GC at 3' end of primer (which stabilizes the binding site and may improve efficiency) B. Flag primers with too many GC at end of primer (too many can cause mispriming) C. Flag primers with single repeats D. Flag primers with di repeats
 // heuristics_csv: target_name target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm pass_filter pass_GC3prime pass_GCclamp pass_SIrepeats pass_DIrepeats
+
 process heuristics {
     tag "characteristics"
     publishDir "${params.outdir}", mode: 'copy'
@@ -65,7 +65,7 @@ process heuristics {
 
     script:
     """
-    mpcrutils heuristics --in $primerpairs --pass ${run_prefix}.01_heuristics.pass.csv --fail ${run_prefix}.01_heuristics.fail.csv
+    mpcrutils.py3 heuristics --in $primerpairs --pass ${params.run_prefix}.01_heuristics.pass.csv --fail ${params.run_prefix}.01_heuristics.fail.csv
     """
 }
  
@@ -98,7 +98,7 @@ process exact_matching {
 
     script:
     """
-    mpcrutils exact_match --fasta $reference --in $primerpairs --columnname "em_internal" --pass ${run_prefix}.02_exact_match.pass.csv --fail ${run_prefix}.02_exact_match.fail.csv
+    mpcrutils exact_match --fasta $reference --in $primerpairs --columnname "em_internal" --pass ${params.run_prefix}.02_exact_match.pass.csv --fail ${params.run_prefix}.02_exact_match.fail.csv
     """
 }
 
@@ -117,7 +117,7 @@ process int_therm_matching {
 
     script:
     """
-    mpcrutils thermo_match --fasta $reference --in $primerpairs --columnname "thm_internal" --pass ${run_prefix}.03_thermo_match.pass.csv --fail ${run_prefix}.03_thermo_match.fail.csv
+    mpcrutils thermo_match --fasta $reference --in $primerpairs --columnname "thm_internal" --pass ${params.run_prefix}.03_thermo_match.pass.csv --fail ${params.run_prefix}.03_thermo_match.fail.csv
     """
 }
 
@@ -135,7 +135,7 @@ process dimerization {
 
     script:
     """
-    mpcrutils dimerization --fasta $reference --in $primerpairs --pass ${run_prefix}.04_dimerization.pass.csv --fail ${run_prefix}.04_dimerization.fail.csv
+    mpcrutils dimerization --fasta $reference --in $primerpairs --pass ${params.run_prefix}.04_dimerization.pass.csv --fail ${params.run_prefix}.04_dimerization.fail.csv
     """
 }
 
@@ -158,7 +158,7 @@ if(params.ch_ext_references) {
 
       script:
       """
-      mpcrutils exact_match --fasta $reference --in $primerpairs --columnname "em_external" --pass ${run_prefix}.05_exact_match.pass.csv --fail ${run_prefix}.05_exact_match.fail.csv
+      mpcrutils exact_match --fasta $reference --in $primerpairs --columnname "em_external" --pass ${params.run_prefix}.05_exact_match.pass.csv --fail ${params.run_prefix}.05_exact_match.fail.csv
       """
   }
 
@@ -176,13 +176,14 @@ if(params.ch_ext_references) {
 
       script:
       """
-      mpcrutils thermo_match --fasta $references --in $primerpairs --columnname "thm_external" --pass ${run_prefix}.06_thermo_match.pass.csv --fail ${run_prefix}.06_thermo_match.fail.csv
+      mpcrutils thermo_match --fasta $references --in $primerpairs --columnname "thm_external" --pass ${params.run_prefix}.06_thermo_match.pass.csv --fail ${params.run_prefix}.06_thermo_match.fail.csv
       """
   }
 
 
 }
 
+*/
 
 
 
