@@ -13,16 +13,21 @@ Brief description here.
     python3 and packages: biopython primer3-py pyfaidx  
     bedtools  
 
-  2. Test the pipeline  
+On a mac using the [homebrew](https://brew.sh) package manager:
+       
+    brew install htslib
+    brew install python3
+    pip3 install biopython primer3-py pyfaidx
+    brew install bedtools
 
-```bash
-#with docker
-nextflow run mpcrseq/mpcrseq-design -profile test,docker
-#without docker
-nextflow run mpcrseq/mpcrseq-design -profile test
-```
+  3. Test the pipeline  
 
-  3. Run with your own data  
+    #with docker
+    nextflow run mpcrseq/mpcrseq-design -profile test,docker
+    #without docker
+    nextflow run mpcrseq/mpcrseq-design -profile test
+
+  4. Run with your own data  
   
     nextflow run mpcrseq/mpcrseq-design -profile docker -reference reference.fasta -targets targets.bed
 
