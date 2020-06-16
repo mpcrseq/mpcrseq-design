@@ -4,19 +4,29 @@ A [nextflow](https://nextflow.io) based pipeline to design PCR primer pools for 
 ## Introduction
 Brief description here.
 
+## Quick-start
+
+  1. Install [Nextflow](https://www.nextflow.io).
+
+  2. Test the pipeline  
+    nextflow run -profile test,docker
+
+  3. Run with your own data  
+    nextflow run -profile docker -reference reference.fasta -targets targets.bed
+
 ## Pipeline steps
 
-1. Repeat Masking (important step to be completed before running the pipeline.)
-2. Variant Masking
-3. Mappability Masking
-4. Target Homopolymer Filtering
-5. Primer design
-6. Primer characteristics checking
-7. Primer off-target exact matching
-8. Primer off-target inexact matching
-9. Primer pair dimerization
-10. Non-target genome matching
-11. Filter primer pairs for compatability
+  1. Repeat Masking (important step to be completed before running the pipeline.)
+  2. Variant Masking
+  3. Mappability Masking
+  4. Target Homopolymer Filtering
+  5. Primer design
+  6. Primer characteristics checking
+  7. Primer off-target exact matching
+  8. Primer off-target inexact matching
+  9. Primer pair dimerization
+  10. Non-target genome matching
+  11. Filter primer pairs for compatability
 
 ### Repeat Masking
 The input reference genome must be repeat masked. This pipeline does not perform repeat masking. [RepeatMasker](http://www.repeatmasker.org) will do the job.
