@@ -11,14 +11,14 @@ Brief description here.
   2. Use [docker](https://www.docker.com) (very slow on macs),  
    **OR** install the following software:  
       htslib or tabix (for bgzip)  
-      python3 and packages: biopython primer3-py pyfaidx  
+      python3 and modules: biopython primer3-py pyfaidx fasta click
       bedtools  
 
    To install on a mac using the [homebrew](https://brew.sh) package manager:
 
       brew install htslib
       brew install python3
-      pip3 install biopython primer3-py pyfaidx
+      pip3 install biopython primer3-py pyfaidx fasta click
       brew install bedtools
 
   3. Test the pipeline  
