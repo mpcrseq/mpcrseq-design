@@ -34,11 +34,10 @@ nextflow run mpcrseq/mpcrseq-design -profile test
   4. Target Homopolymer Filtering
   5. Primer design
   6. Primer characteristics checking
-  7. Primer off-target exact matching
-  8. Primer off-target inexact matching
+  7. Primer off-target matching
+  8. Non-target genome matching
   9. Primer pair dimerization
-  10. Non-target genome matching
-  11. Filter primer pairs for compatability
+  10. Filter primer pairs for compatability
 
 ### Repeat Masking
 The input reference genome must be repeat masked. This pipeline does not perform repeat masking. [RepeatMasker](http://www.repeatmasker.org) will do the job.

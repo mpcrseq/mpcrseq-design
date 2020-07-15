@@ -1,5 +1,5 @@
 
-Channel.fromPath(params.reference).into{ch_reference_for_maskreference; ch_reference_for_primer3; ch_reference_for_int_therm_matching}
+Channel.fromPath(params.reference).into{ch_reference_for_maskreference }
 ch_vcf = Channel.fromPath(params.vcf)
 ch_targetbed = Channel.fromPath(params.targets)
 
@@ -13,7 +13,7 @@ process maskreference {
     file(vcf) from ch_vcf
 
     output:
-    file "*.masked.fasta.gz" into ch_fasta_for_primer3, ch_fasta_for_exact_matching, ch_fasta_for_thermo_matching
+    file "*.masked.fasta.gz" into ch_fasta_for_primer3, ch_fasta_for_exact_matching, ch_fasta_for_thermo_matching, ch_fasta_for_mfe_index, ch_fasta_for_mfeprimer
 
     script:
     """
@@ -29,46 +29,95 @@ process maskreference {
 
 // This process uses primer3 to design primers for each supplied target. After designing the primers they are filtered to meet any further criteria specified in the pipeline parameters. Then a TSV file is output with the putative primer information.
 // primer3_csv: target_name target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm pass_filter
+
+ch_targetbed.splitText( by: 10 ).set{ ch_target_chunks }
+
 process primer3 {
     tag "primerdesign"
     publishDir "${params.outdir}", mode: 'copy'
 
+    cache 'deep'
+
     input:
     file fasta from ch_fasta_for_primer3
-    file bed from ch_targetbed
+    file bed from ch_target_chunks
 
     output:
-    file "${params.run_prefix}.00_primer3.tsv" into ch_primer3
+    file "${params.run_prefix}.00_primer3.tsv" into ch_primer3_chunks
 
     script:
     """
     
-    mpcrutils.py3 primer3 --product_size_range '0-200' $bed $fasta > ${params.run_prefix}.00_primer3.tsv
+    mpcrutils.py primer3 --product_size_range '0-200' $bed $fasta > ${params.run_prefix}.00_primer3.tsv
     
     """
 }
 
-/*
+ch_primer3_chunks.collectFile(name: "00_primer_3.csv", storeDir: params.outdir, sort: true ).set{ ch_primer3 }
+
 
 // This process filters primers based on some "rules" gathered from literature and the internet. A. Flag primers with GC at 3' end of primer (which stabilizes the binding site and may improve efficiency) B. Flag primers with too many GC at end of primer (too many can cause mispriming) C. Flag primers with single repeats D. Flag primers with di repeats
-// heuristics_csv: target_name target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm pass_filter pass_GC3prime pass_GCclamp pass_SIrepeats pass_DIrepeats
 
 process heuristics {
     tag "characteristics"
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    file "primerpairs" from ch_primer3
+    file primerpairs from ch_primer3
 
     output:
-    file "*.01_heuristics.pass.bed" into ch_heuristics
+    file "${params.run_prefix}.01_heuristics.tsv" into ch_heuristics
 
     script:
     """
-    mpcrutils.py3 heuristics --in $primerpairs --pass ${params.run_prefix}.01_heuristics.pass.csv --fail ${params.run_prefix}.01_heuristics.fail.csv
+
+    mpcrutils.py gcclamp $primerpairs > ${params.run_prefix}.01a_heuristics.tsv
+    mpcrutils.py gc3prime ${params.run_prefix}.01a_heuristics.tsv > ${params.run_prefix}.01b_heuristics.tsv
+    mpcrutils.py max_single_repeats ${params.run_prefix}.01b_heuristics.tsv > ${params.run_prefix}.01c_heuristics.tsv
+    mpcrutils.py max_dinucleotide_repeats ${params.run_prefix}.01c_heuristics.tsv > ${params.run_prefix}.01_heuristics.tsv
+    
     """
 }
- 
+
+
+process mfe_index {
+    tag "mfeprimer index"
+
+    input:
+    file fasta from ch_fasta_for_mfe_index
+
+    output:
+    set file("foo.fasta"), file('foo.fasta.fai'), file('foo.fasta.json'), file('foo.fasta.primerqc'), file('foo.fasta.primerqc.fai') into ch_mfe_index
+
+    script:
+    """
+    gzcat $fasta > foo.fasta
+    mfeprimer index -i foo.fasta
+    """
+}
+
+
+process mfeprimer {
+    tag "mfeprimer"
+    publishDir "${params.outdir}", mode: 'copy'
+
+    input:
+    file index from ch_mfe_index
+    file primerpairs from ch_heuristics
+
+    output:
+    file("${params.run_prefix}.02_mfeprimer") into ch_mfeprimer
+
+    script:
+    """
+    mpcrutils.py convert_to_fasta $primerpairs > primers.fasta
+
+    mfeprimer -i primers.fasta -d foo.fasta -j -o ${params.run_prefix}.02_mfeprimer
+    """
+}
+
+
+/*
  
 // Performs exact matching for off-target priming internally and in external genomes.
 
