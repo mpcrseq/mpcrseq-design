@@ -112,7 +112,7 @@ process mfeprimer {
     """
     mpcrutils.py convert_to_fasta $primerpairs > primers.fasta
 
-    mfeprimer -tm 50 -i primers.fasta -d foo.fasta -j -o ${params.run_prefix}.02_mfeprimer
+    mfeprimer --tm 50 -i primers.fasta -d foo.fasta -j -o ${params.run_prefix}.02_mfeprimer
     """
 }
 
