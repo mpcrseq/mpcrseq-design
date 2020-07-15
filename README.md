@@ -42,11 +42,11 @@ Brief description here.
 ## Pipeline steps
 
   1. Repeat Masking (important step to be completed before running the pipeline.)
-  2. Variant Masking
+  2. **Variant Masking**
   3. Mappability Masking
   4. Target Homopolymer Filtering
-  5. Primer design
-  6. Primer characteristics checking
+  5. **Primer design**
+  6. **Primer characteristics checking**
   7. Primer off-target matching
   8. Non-target genome matching
   9. Primer pair dimerization
