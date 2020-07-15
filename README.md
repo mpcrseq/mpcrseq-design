@@ -15,7 +15,8 @@ Brief description here.
  - bedtools
  - [mfeprimer](https://github.com/quwubin/MFEprimer-3.0/releases)
 
-   To install on a mac using the [homebrew](https://brew.sh) package manager:
+
+To install on a mac using the [homebrew](https://brew.sh) package manager:
 
       brew install htslib
       brew install python3
