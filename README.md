@@ -8,21 +8,27 @@ Brief description here.
 
   1. Install [Nextflow](https://www.nextflow.io).
 
-  2. Use docker (very slow on macs), or install the following software:  
-    htslib or tabix (for bgzip)  
-    python3 and packages: biopython primer3-py pyfaidx  
-    bedtools  
+  2. Use [docker](https://www.docker.com) (very slow on macs),  
+   **OR** install the following software:  
+      htslib or tabix (for bgzip)  
+      python3 and packages: biopython primer3-py pyfaidx  
+      bedtools  
 
-  2. Test the pipeline  
+   To install on a mac using the [homebrew](https://brew.sh) package manager:
 
-```bash
-#with docker
-nextflow run mpcrseq/mpcrseq-design -profile test,docker
-#without docker
-nextflow run mpcrseq/mpcrseq-design -profile test
-```
+      brew install htslib
+      brew install python3
+      pip3 install biopython primer3-py pyfaidx
+      brew install bedtools
 
-  3. Run with your own data  
+  3. Test the pipeline  
+
+    #with docker
+    nextflow run mpcrseq/mpcrseq-design -profile test,docker
+    #without docker
+    nextflow run mpcrseq/mpcrseq-design -profile test
+
+  4. Run with your own data  
   
     nextflow run mpcrseq/mpcrseq-design -profile docker -reference reference.fasta -targets targets.bed
 
