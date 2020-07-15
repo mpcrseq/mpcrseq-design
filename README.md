@@ -10,9 +10,10 @@ Brief description here.
 
   2. Use [docker](https://www.docker.com) (very slow on macs),  
    **OR** install the following software:  
-      htslib or tabix (for bgzip)  
-      python3 and modules: biopython primer3-py pyfaidx fasta click
-      bedtools  
+ - htslib or tabix (for bgzip)  
+ - python3 and modules: biopython primer3-py pyfaidx fasta click
+ - bedtools
+ - [mfeprimer](https://github.com/quwubin/MFEprimer-3.0/releases)
 
    To install on a mac using the [homebrew](https://brew.sh) package manager:
 
@@ -20,6 +21,12 @@ Brief description here.
       brew install python3
       pip3 install biopython primer3-py pyfaidx fasta click
       brew install bedtools
+      
+      # mfeprimer
+      wget https://github.com/quwubin/MFEprimer-3.0/releases/download/v3.2.0/mfeprimer-3.2.0-darwin-10.6-amd64.gz
+      gunzip mfeprimer-3.2.0-darwin-10.6-amd64.gz
+      mv mfeprimer-3.2.0-darwin-10.6-amd64 /usr/local/bin/mfeprimer
+      chmod +x /usr/local/bin/mfeprimer
 
   3. Test the pipeline  
 
