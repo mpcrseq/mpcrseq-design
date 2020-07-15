@@ -30,7 +30,7 @@ process maskreference {
 // This process uses primer3 to design primers for each supplied target. After designing the primers they are filtered to meet any further criteria specified in the pipeline parameters. Then a TSV file is output with the putative primer information.
 // primer3_csv: target_name target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm pass_filter
 
-ch_targetbed.splitText( by: 10 ).set{ ch_target_chunks }
+ch_targetbed.splitText( by: 10 ).set{ ch_target_chunks }.view()
 
 process primer3 {
     tag "primerdesign"
@@ -106,13 +106,13 @@ process mfeprimer {
     file primerpairs from ch_heuristics
 
     output:
-    file("${params.run_prefix}.02_mfeprimer") into ch_mfeprimer
+    set file("${params.run_prefix}.02_mfeprimer"), file("${params.run_prefix}.02_mfeprimer.json") into ch_mfeprimer
 
     script:
     """
     mpcrutils.py convert_to_fasta $primerpairs > primers.fasta
 
-    mfeprimer -i primers.fasta -d foo.fasta -j -o ${params.run_prefix}.02_mfeprimer
+    mfeprimer -tm 50 -i primers.fasta -d foo.fasta -j -o ${params.run_prefix}.02_mfeprimer
     """
 }
 
