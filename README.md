@@ -24,13 +24,13 @@ Brief description here.
   3. Test the pipeline  
 
     #with docker
-    nextflow run mpcrseq/mpcrseq-design -profile test,docker
+    nextflow run mpcrseq/mpcrseq-design -latest -profile test,docker
     #without docker
-    nextflow run mpcrseq/mpcrseq-design -profile test
+    nextflow run mpcrseq/mpcrseq-design -latest -profile test
 
   4. Run with your own data  
   
-    nextflow run mpcrseq/mpcrseq-design -profile docker -reference reference.fasta -targets targets.bed
+    nextflow run mpcrseq/mpcrseq-design -latest -profile docker -reference reference.fasta -targets targets.bed
 
 ## Pipeline steps
 
