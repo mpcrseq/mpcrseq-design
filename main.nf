@@ -30,7 +30,7 @@ process maskreference {
 // This process uses primer3 to design primers for each supplied target. After designing the primers they are filtered to meet any further criteria specified in the pipeline parameters. Then a TSV file is output with the putative primer information.
 // primer3_csv: target_name target_start target_end f_start f_end r_start r_end f_seq r_seq amplicon_start amplicon_end amplicon_seq f_gc r_gc f_tm r_tm pass_filter
 
-ch_targetbed.splitText( by: 10 ).set{ ch_target_chunks }.view()
+ch_targetbed.splitText( by: 10 ).set{ ch_target_chunks }
 
 process primer3 {
     tag "primerdesign"
